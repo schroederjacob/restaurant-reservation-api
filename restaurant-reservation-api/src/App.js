@@ -1,6 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
-
 const api = require('./Api');
 
 // Restaurant endpoints
@@ -28,7 +25,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Base Node project for the app
         </p>
