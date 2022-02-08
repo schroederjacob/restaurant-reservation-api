@@ -1,12 +1,12 @@
-//const react_app = require(react);
-//const app = react_app();
-//const port = 3000;
+const express = require('express');
+const app = express();
+const port = 3000;
 
-//app.use(react_app.json());
+app.use(express.json());
 
-//app.listen(port, () => {
-  //console.log(`Restaurant app is running on port ${port}.`);
-//});
+app.listen(port, () => {
+    console.log(`Restaurant app is running on port ${port}.`);
+});
 
 const api = require('./Api');
 
