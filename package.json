@@ -1,0 +1,22 @@
+{
+  "name": "restaurant-reservation-api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/App.js",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "scripts": {
+    "serve": "nodemon App.js"
+  },
+  "eslintConfig": {
+    "extends": []
+  },
+  "browserslist": {
+    "production": [],
+    "development": []
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
