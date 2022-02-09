@@ -48,13 +48,13 @@ const postRestaurant = async (request, response) => {
 // Replace a restaurant
 const putRestaurant = (request, response) => {
     const { id, restaurant_name, zip_code } = request.body;
-    restaurants[id] = { id, restaurant_name, zip_code };
+    restaurants[id-1] = { id, restaurant_name, zip_code };
     response.status(200).send();
 };
 // Retrieve an individual restaurant
 const getRestaurant = (request, response) => {
-    const { id } = request.body;
-    response.status(200).json(restaurants[id]);
+    const id = parseInt(request.params.id);
+    response.status(200).json(restaurants[id-1]);
 };
 // Retrieve all restaurants
 const getAllRestaurants = async (request, response) => {
@@ -63,14 +63,14 @@ const getAllRestaurants = async (request, response) => {
 // Modify a restaurant
 const patchRestaurant = (request, response) => {
     const { id, restaurant_name, zip_code } = request.body;
-    restaurants[id] = { id, restaurant_name, zip_code };
+    restaurants[id-1] = { id, restaurant_name, zip_code };
     response.status(200).send(`Restaurant updated successfully.`);
 };
 // Remove a restaurant
 const deleteRestaurant = (request, response) => {
-    const { id, restaurant_name } = request.body;
-    restaurants.shift(id);
-    response.status(200).send(`Restaurant ${restaurant_name}. deleted successfully.`);
+    const id = parseInt(request.params.body);
+    restaurants.shift(id-1);
+    response.status(200).send(`Restaurant deleted successfully.`);
 };
 
 // Reservation Methods
@@ -88,7 +88,7 @@ const putReservation = (request, response) => {
 };
 // Retrieve an individual reservation
 const getReservation = (request, response) => {
-    const { confirmation_number } = request.body;
+    const confirmation_number = parseInt(request.params.confirmation_number);
     response.status(200).json(reservations[confirmation_number]);
 };
 // Retrieve all reservations
@@ -103,7 +103,7 @@ const patchReservation = (request, response) => {
 };
 // Remove a reservation
 const deleteReservation = (request, response) => {
-    const { confirmation_number } = request.body;
+    const confirmation_number = parseInt(request.params.confirmation_number);
     restaurants.shift(confirmation_number);
     response.status(200).send(`Reservation ${confirmation_number}. deleted successfully.`);
 };
@@ -123,8 +123,8 @@ const putTable = (request, response) => {
 };
 // Retrieve an individual Table
 const getTable = (request, response) => {
-    const { table_id, restaurant_id } = request.body;
-    response.status(200).json(tables[table_id, restaurant_id]);
+    const table_id = parseInt(request.params.table_id);
+    response.status(200).json(tables[table_id-1]);
 };
 // Retrieve all Tables
 const getAllTables = async (request, response) => {
