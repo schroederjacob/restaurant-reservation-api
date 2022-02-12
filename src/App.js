@@ -1,36 +1,38 @@
 // Set up Express server
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const api = require('./Api');
 const port = 3000;
 
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, }));
 
 app.listen(port, () => {
     console.log(`Restaurant app is running on port ${port}.`);
 });
 
-const api = require('./Api');
-
 // Restaurant endpoints
-app.post('/restaurants/', api.postRestaurant);
-app.put('/restaurants/:id', api.putRestaurant);
+app.post('/restaurants/', api.addRestaurant);
+app.put('/restaurants/:id', api.updateRestaurant);
 app.get('/restaurants/:id', api.getRestaurant);
 app.get('/restaurants/', api.getAllRestaurants);
-app.patch('/restaurants/:id', api.patchRestaurant);
+app.patch('/restaurants/:id', api.replaceRestaurant);
 app.delete('/restaurants/:id', api.deleteRestaurant);
 
 // Reservation endpoints
-app.post('/reservations/post', api.postReservation);
-app.put('/reservations/put', api.putReservation);
-app.get('/reservations/:id', api.getReservation);
+app.post('/reservations/', api.addReservation);
+app.put('/reservations/:confirmation_number', api.updateReservation);
+app.get('/reservations/:confirmation_number', api.getReservation);
 app.get('reservations/', api.getAllReservations);
-app.patch('/reservations/:id', api.patchReservation);
-app.delete('/reservations/:id', api.deleteReservation);
+app.patch('/reservations/:confirmation_number', api.replaceReservation);
+app.delete('/reservations/:confirmation_number', api.deleteReservation);
 
 // Table endpoints
-app.post('/tables/post', api.postTable);
-app.put('/tables/put', api.putTable);
-app.get('/tables/:id', api.getTable);
+app.post('/tables/', api.addTable);
+app.put('/tables/:restaurant_id/:table_id', api.updateTable);
+app.get('/tables/:restaurant_id/:table_id', api.getTable);
 app.get('/tables/', api.getAllTables);
-app.patch('/tables/:id', api.patchTable);
-app.delete('/tables/:id', api.deleteTable);
+app.patch('/tables/:restaurant_id/:table_id', api.replaceTable);
+app.delete('/tables/:restaurant_id/:table_id', api.deleteTable);
