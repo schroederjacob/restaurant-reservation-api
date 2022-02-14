@@ -6,7 +6,8 @@ const pool = new Pool({
     database: 'restaurantapp',
     password: 'kvPZn8mk5REQqpAJ',
     port: 25060,
-    ssl: true
+    ssl: true,
+    ca: fs.readFileSync("") // file location needs to be placed here.
 })
 
 // Restaurant Methods
