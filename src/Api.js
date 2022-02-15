@@ -1,5 +1,5 @@
 // Configure PostgreSQL connection
-const fs = require("fs");
+const fs = require('fs');
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'doadmin',
