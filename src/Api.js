@@ -1,4 +1,5 @@
 // Configure PostgreSQL connection
+const fs = require('fs');
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'doadmin',
@@ -6,7 +7,10 @@ const pool = new Pool({
     database: 'restaurantapp',
     password: 'kvPZn8mk5REQqpAJ',
     port: 25060,
-    ssl: true
+    ssl: {
+        rejectUnauthorized: true,
+        ca: fs.readFileSync("ca-certificate.crt") // file location needs to be placed here.
+    }
 })
 
 // Restaurant Methods
