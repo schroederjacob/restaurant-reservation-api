@@ -35,7 +35,7 @@ const updateRestaurant = (request, response) => {
     const zip_code = parseInt(request.params.zip_code)
     const restaurant_name = request.params.restaurant_name
 
-    pool.query ('UPDATE restaurants SET restaurant_name = $1, zip_code = $2 Where id = $3',
+    pool.query ('UPDATE restaurants SET restaurant_name = $1, zip_code = $2 WHERE id = $3',
         [restaurant_name, zip_code, id],
         (error, results) => {
             if (error) {
@@ -71,7 +71,7 @@ const replaceRestaurant = (request, response) => {
     const zip_code = parseInt(request.params.zip_code)
     const restaurant_name = request.params.restaurant_name
 
-    pool.query ('UPDATE restaurants SET restaurant_name = $1, zip_code = $2, id = $3, Where id = $3',
+    pool.query ('UPDATE restaurants SET restaurant_name = $1, zip_code = $2, id = $3, WHERE id = $3',
         [restaurant_name, zip_code, id],
         (error, results) => {
             if (error) {
@@ -196,7 +196,7 @@ const updateTable = (request, response) => {
     const table_id = parseInt(request.params.table_id)
     const size = parseInt(request.params.size)
 
-    pool.query ('UPDATE tables SET size = $1 WHERE restaurant_id = $2, table_id = $3',
+    pool.query ('UPDATE tables SET size = $1 WHERE restaurant_id = $2 AND table_id = $3',
         [size, restaurant_id, table_id],
         (error, results) => {
             if (error) {
@@ -210,7 +210,7 @@ const getTable = (request, response) => {
     const restaurant_id = parseInt(request.params.restaurant_id)
     const table_id = parseInt(request.params.table_id)
     
-    pool.query('SELECT * FROM tables WHERE restaurant_id = $1, table_id = $2', [restaurant_id, table_id],
+    pool.query('SELECT * FROM tables WHERE restaurant_id = $1 AND table_id = $2', [restaurant_id, table_id],
     (error, results) => {
         if (error) {
             throw error
@@ -234,7 +234,7 @@ const replaceTable = (request, response) => {
     const table_id = parseInt(request.params.table_id)
     const size = parseInt(request.params.size)
 
-    pool.query ('UPDATE tables SET table_id = $1, restaurant_id = $2, size = $3 WHERE restaurant_id = $2, table_id = $1',
+    pool.query ('UPDATE tables SET table_id = $1, restaurant_id = $2, size = $3 WHERE restaurant_id = $2 AND table_id = $1',
         [table_id, restaurant_id, size],
         (error, results) => {
             if (error) {
@@ -248,12 +248,95 @@ const deleteTable = (request, response) => {
     const table_id = parseInt(request.params.table_id)
     const restaurant_id = parseInt(request.params.restaurant_id)
 
-    pool.query('DELETE FROM tables WHERE restaurant_id = $1, table_id = $2', [restaurant_id, table_id],
+    pool.query('DELETE FROM tables WHERE restaurant_id = $1 AND table_id = $2', [restaurant_id, table_id],
     (error, results) => {
         if (error) {
             throw error
         }
         response.status(200).send(`Table deleted with ID: ${table_id}`)
+    })
+};
+
+// Employee Methods
+// Create an employee
+const addEmployee = async (request, response) => {
+    const emp_username = request.params.emp_username
+    const emp_password = request.params.emp_password
+    const restaurant_id = parseInt(request.params.restaurant_id)
+    
+    pool.query('INSERT INTO employees (emp_username, emp_password, restaurant_id) VALUES ($1, $2, $3)',
+    [emp_username, emp_password, restaurant_id], 
+    (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(201).send(`Employee added to Restaurant: ${restaurant_id}`)
+    })
+};
+// Modify an employee
+const updateEmployee = (request, response) => {
+    const emp_username = request.params.emp_username
+    const emp_password = request.params.emp_password
+    const restaurant_id = parseInt(request.params.restaurant_id)
+
+    pool.query ('UPDATE employees SET emp_password = $1 WHERE emp_username = $2 AND restaurant_id = $3',
+        [emp_password, emp_username, restaurant_id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`Employee modified with username: ${emp_username}`)
+        })
+};
+// Retrieve an individual employee by username and restaurant_id
+const getEmployee = (request, response) => {
+    const emp_username = request.params.emp_username
+    const restaurant_id = parseInt(request.params.restaurant_id)
+    
+    pool.query('SELECT * FROM employees WHERE emp_username = $1 AND restaurant_id = $2',
+    [emp_username, restaurant_id],
+    (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+};
+// Retrieve all employee
+const getAllEmployees = async (request, response) => {
+    pool.query('SELECT * FROM employees ORDER BY restaurant_id ASC', (error, results) => {
+         if (error) {
+             throw error
+         }
+        response.status(200).json(results.rows);
+     })
+};
+// Replace an employee
+const replaceEmployee = (request, response) => {
+    const emp_username = request.params.emp_username
+    const emp_password = request.params.emp_password
+    const restaurant_id = parseInt(request.params.restaurant_id)
+
+    pool.query ('UPDATE employees SET emp_username = $1, emp_password = $2, restaurant_id = $3, WHERE emp_username = $1 AND restaurant_id = $3',
+        [emp_username, emp_password, restaurant_id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`Employee modified with username: ${emp_username}`)
+        })
+};
+// Remove an employee
+const deleteEmployee = (request, response) => {
+    const emp_username = request.params.emp_username
+    const restaurant_id = parseInt(request.params.restaurant_id)
+
+    pool.query('DELETE FROM employees WHERE emp_username = $1 AND restaurant_id = $2', [emp_username, restaurant_id],
+    (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send(`Employee deleted with username: ${emp_username}`)
     })
 };
 
@@ -276,5 +359,11 @@ module.exports = {
     getAllTables,
     getTable,
     replaceTable,
-    deleteTable
+    deleteTable,
+    addEmployee,
+    updateEmployee,
+    getEmployee,
+    getAllEmployees,
+    replaceEmployee,
+    deleteEmployee
 };
