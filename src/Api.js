@@ -30,6 +30,20 @@ const addRestaurant = async (request, response) => {
         response.status(201).send(`Restaurant added with ID: ${id}`)
     })
 };
+// Update the table counter
+const updateTableCount = (request, response) => {
+    const id = parseInt(request.params.id)
+    const table_count = parseInt(request.params.id)
+
+    pool.query ('UPDATE restaurants SET table_count = $1, WHERE id = $2',
+    [table_count, id],
+    (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send(`Restaurant modified with ID: ${id}`)
+    })
+};
 // Modify a restaurant
 const updateRestaurant = (request, response) => {
     const id = parseInt(request.params.id)
@@ -345,6 +359,7 @@ const deleteEmployee = (request, response) => {
 // Exports the Methods
 module.exports = {
     addRestaurant,
+    updateTableCount,
     updateRestaurant,
     getRestaurant,
     getAllRestaurants,

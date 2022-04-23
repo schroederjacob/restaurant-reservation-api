@@ -15,6 +15,7 @@ app.listen(port, () => {
 
 // Restaurant endpoints
 app.post('/restaurants/', api.addRestaurant);
+app.put('/restaurants/:id', api.updateTableCount);
 app.put('/restaurants/:id', api.updateRestaurant);
 app.get('/restaurants/:id', api.getRestaurant);
 app.get('/restaurants/', api.getAllRestaurants);
